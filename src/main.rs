@@ -1,6 +1,8 @@
 extern crate image;
 
 use image::{GenericImageView, GrayImage, ImageBuffer};
+use minifb::{Key, Window, WindowOptions};
+use std::time::Duration;
 
 const SIZE: u32 = 200;
 const DECAY: u8 = 2;
@@ -43,20 +45,43 @@ fn next_generation(current: &GrayImage, next: &mut GrayImage) {
 }
 
 fn main() {
-    let mut img1: GrayImage = ImageBuffer::new(SIZE, SIZE);
-    let mut img2: GrayImage = ImageBuffer::new(SIZE, SIZE);
+    let mut current_image: GrayImage = ImageBuffer::new(SIZE, SIZE);
+    let mut next_image: GrayImage = ImageBuffer::new(SIZE, SIZE);
 
-    *img1.get_pixel_mut(SIZE / 2, SIZE / 2) = image::Luma([255u8]);
+    *current_image.get_pixel_mut(SIZE / 2, SIZE / 2) = image::Luma([255u8]);
 
-    for i in 0..205 {
-        next_generation(&img1, &mut img2);
+    let mut buffer: Vec<u32> = vec![0; (SIZE * SIZE) as usize];
+    let mut window = Window::new(
+        "Hello!! :)",
+        SIZE as usize,
+        SIZE as usize,
+        WindowOptions::default(),
+    )
+    .unwrap();
+
+    // 60 fps
+    window.limit_update_rate(Some(Duration::from_micros(16600)));
+
+    // let mut i = 0;
+    while window.is_open() {
+        next_generation(&current_image, &mut next_image);
         // Swap the two
-        let tmp = img2;
-        img2 = img1;
-        img1 = tmp;
+        let tmp = next_image;
+        next_image = current_image;
+        current_image = tmp;
 
-        if i > 200 {
-            img1.save(format!("export/generate{}.png", i)).unwrap();
+        for (buf, &pixel) in buffer.iter_mut().zip(current_image.iter()) {
+            let pixel = pixel as u32;
+            *buf = pixel | pixel << 8 | pixel << 16
         }
+
+        window
+            .update_with_buffer(&buffer, SIZE as usize, SIZE as usize)
+            .unwrap();
+
+        // i += 1;
+        // if i > 200 {
+        //     img1.save(format!("export/generate{}.png", i)).unwrap();
+        // }
     }
 }
