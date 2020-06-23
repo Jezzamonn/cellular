@@ -5,9 +5,9 @@ use std::time::Duration;
 
 
 const SIZE: u32 = 200;
-const DECAY: u8 = 10;
+const DECAY: u8 = 5;
 const MAKE_ALIVE_THRESHOLD: u8 = 200;
-const COME_ALIVE_THRESHOLD: u8 = 100;
+const COME_ALIVE_THRESHOLD: u8 = 50;
 const ALIVE_START: u8 = 250;
 
 const DIRECTIONS: [(i32, i32); 12] = [
@@ -64,7 +64,7 @@ fn next_generation(current: &GrayImage, next: &mut GrayImage) {
                 continue;
             }
 
-            if rng.gen::<f32>() < 0.00005 * sum as f32 {
+            if rng.gen::<f32>() < 0.00004 * sum as f32 {
                 // Make it alive!
                 *pixel = image::Luma([ALIVE_START]);
             }
