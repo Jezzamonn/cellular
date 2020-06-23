@@ -5,7 +5,7 @@ use std::time::Duration;
 
 
 const SIZE: u32 = 200;
-const DECAY: u8 = 2;
+const DECAY: u8 = 10;
 const MAKE_ALIVE_THRESHOLD: u8 = 200;
 const COME_ALIVE_THRESHOLD: u8 = 100;
 
