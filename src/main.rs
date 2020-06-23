@@ -10,24 +10,24 @@ const MAKE_ALIVE_THRESHOLD: u8 = 200;
 const COME_ALIVE_THRESHOLD: u8 = 100;
 const ALIVE_START: u8 = 250;
 
-const DIRECTIONS: [(i32, i32); 4] = [
-    (-1, 0),
-    (0, -1),
-    (0, 1),
-    (1, 0),
-
-    // (-2, 0),
-    // (-1, -1),
+const DIRECTIONS: [(i32, i32); 12] = [
     // (-1, 0),
-    // (-1, 1),
-    // (0, -2),
     // (0, -1),
     // (0, 1),
-    // (0, 2),
-    // (1, -1),
     // (1, 0),
-    // (1, 1),
-    // (2, 0),
+
+    (-2, 0),
+    (-1, -1),
+    (-1, 0),
+    (-1, 1),
+    (0, -2),
+    (0, -1),
+    (0, 1),
+    (0, 2),
+    (1, -1),
+    (1, 0),
+    (1, 1),
+    (2, 0),
 ];
 
 fn next_generation(current: &GrayImage, next: &mut GrayImage) {
@@ -45,7 +45,7 @@ fn next_generation(current: &GrayImage, next: &mut GrayImage) {
 
         // TODO: Consider refactoring to remove branching
         if current_pixel[0] <= COME_ALIVE_THRESHOLD {
-            let mut sum: u32 = 0;
+            let mut sum: f32 = 0.0;
             for (dx, dy) in DIRECTIONS.iter() {
                 let nx = (x as i32 + dx) as u32;
                 let ny = (y as i32 + dy) as u32;
@@ -54,10 +54,17 @@ fn next_generation(current: &GrayImage, next: &mut GrayImage) {
                     continue;
                 }
 
-                sum += current.get_pixel(nx, ny)[0].checked_sub(MAKE_ALIVE_THRESHOLD).unwrap_or(0) as u32;
+                let dist = (nx * nx + ny * ny) as f32;
+                let val = current.get_pixel(nx, ny)[0].checked_sub(MAKE_ALIVE_THRESHOLD).unwrap_or(0) as f32;
+
+                sum += val / dist;
             }
 
-            if rng.gen::<f32>() < 0.005 * sum as f32 {
+            if sum < 0.001 {
+                continue;
+            }
+
+            if rng.gen::<f32>() < 30.0 * sum as f32 {
                 // Make it alive!
                 *pixel = image::Luma([ALIVE_START]);
             }
