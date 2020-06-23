@@ -54,17 +54,17 @@ fn next_generation(current: &GrayImage, next: &mut GrayImage) {
                     continue;
                 }
 
-                let dist = (dx * dx + dy * dy) as f32;
+                let dist = ((dx * dx + dy * dy) as f32).sqrt();
                 let val = current.get_pixel(nx, ny)[0].checked_sub(MAKE_ALIVE_THRESHOLD).unwrap_or(0) as f32;
 
-                sum += val / dist;
+                sum += val * val / dist;
             }
 
             if sum < 0.1 {
                 continue;
             }
 
-            if rng.gen::<f32>() < 0.003 * sum as f32 {
+            if rng.gen::<f32>() < 0.00005 * sum as f32 {
                 // Make it alive!
                 *pixel = image::Luma([ALIVE_START]);
             }
@@ -76,7 +76,11 @@ fn main() {
     let mut current_image: GrayImage = ImageBuffer::new(SIZE, SIZE);
     let mut next_image: GrayImage = ImageBuffer::new(SIZE, SIZE);
 
-    *current_image.get_pixel_mut(SIZE / 2, SIZE / 2) = image::Luma([ALIVE_START]);
+    for (dx, dy) in DIRECTIONS.iter() {
+        let x = (SIZE / 2) as i32 + dx;
+        let y = (SIZE / 2) as i32 + dy;
+        *current_image.get_pixel_mut(x as u32, y as u32) = image::Luma([ALIVE_START]);
+    }
 
     let mut buffer: Vec<u32> = vec![0; (SIZE * SIZE) as usize];
     let mut window = Window::new(
