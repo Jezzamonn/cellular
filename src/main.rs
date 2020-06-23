@@ -5,10 +5,10 @@ use std::time::Duration;
 
 
 const SIZE: u32 = 200;
-const DECAY: u8 = 10;
+const DECAY: u8 = 5;
 const MAKE_ALIVE_THRESHOLD: u8 = 200;
 const COME_ALIVE_THRESHOLD: u8 = 100;
-const ALIVE_START: u8 = 200;
+const ALIVE_START: u8 = 250;
 
 const DIRECTIONS: [(i32, i32); 12] = [
     (-2, 0),
@@ -49,10 +49,10 @@ fn next_generation(current: &GrayImage, next: &mut GrayImage) {
                     continue;
                 }
 
-                sum += current.get_pixel(nx, ny)[0] as u32;
+                sum += current.get_pixel(nx, ny)[0].checked_sub(MAKE_ALIVE_THRESHOLD).unwrap_or(0) as u32;
             }
 
-            if rng.gen::<f32>() < 0.4 * sum as f32 {
+            if rng.gen::<f32>() < 0.001 * sum as f32 {
                 // Make it alive!
                 *pixel = image::Luma([ALIVE_START]);
             }
