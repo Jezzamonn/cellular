@@ -2,6 +2,7 @@ extern crate image;
 
 use image::{GenericImageView, GrayImage, ImageBuffer};
 
+const SIZE: u32 = 200;
 const DECAY: u8 = 2;
 const MAKE_ALIVE_THRESHOLD: u8 = 200;
 const COME_ALIVE_THRESHOLD: u8 = 100;
@@ -42,18 +43,20 @@ fn next_generation(current: &GrayImage, next: &mut GrayImage) {
 }
 
 fn main() {
-    let mut img1: GrayImage = ImageBuffer::new(512, 512);
-    let mut img2: GrayImage = ImageBuffer::new(512, 512);
+    let mut img1: GrayImage = ImageBuffer::new(SIZE, SIZE);
+    let mut img2: GrayImage = ImageBuffer::new(SIZE, SIZE);
 
-    *img1.get_pixel_mut(256, 256) = image::Luma([255u8]);
+    *img1.get_pixel_mut(SIZE / 2, SIZE / 2) = image::Luma([255u8]);
 
-    for i in 0..5 {
+    for i in 0..205 {
         next_generation(&img1, &mut img2);
         // Swap the two
         let tmp = img2;
         img2 = img1;
         img1 = tmp;
 
-        img1.save(format!("export/generate{}.png", i)).unwrap();
+        if i > 200 {
+            img1.save(format!("export/generate{}.png", i)).unwrap();
+        }
     }
 }
