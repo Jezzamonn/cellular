@@ -10,7 +10,20 @@ const MAKE_ALIVE_THRESHOLD: u8 = 200;
 const COME_ALIVE_THRESHOLD: u8 = 100;
 const ALIVE_START: u8 = 200;
 
-const DIRECTIONS: [(i32, i32); 4] = [(0, -1), (-1, 0), (1, 0), (0, 1)];
+const DIRECTIONS: [(i32, i32); 12] = [
+    (-2, 0),
+    (-1, -1),
+    (-1, 0),
+    (-1, 1),
+    (0, -2),
+    (0, -1),
+    (0, 1),
+    (0, 2),
+    (1, -1),
+    (1, 0),
+    (1, 1),
+    (2, 0),
+];
 
 fn next_generation(current: &GrayImage, next: &mut GrayImage) {
     let mut rng = rand::thread_rng();
