@@ -8,6 +8,7 @@ const SIZE: u32 = 200;
 const DECAY: u8 = 10;
 const MAKE_ALIVE_THRESHOLD: u8 = 200;
 const COME_ALIVE_THRESHOLD: u8 = 100;
+const ALIVE_START: u8 = 200;
 
 const DIRECTIONS: [(i32, i32); 4] = [(0, -1), (-1, 0), (1, 0), (0, 1)];
 
@@ -44,7 +45,7 @@ fn next_generation(current: &GrayImage, next: &mut GrayImage) {
                 }
 
                 // Make it alive!
-                *pixel = image::Luma([250u8]);
+                *pixel = image::Luma([ALIVE_START]);
                 break;
             }
         }
@@ -55,7 +56,7 @@ fn main() {
     let mut current_image: GrayImage = ImageBuffer::new(SIZE, SIZE);
     let mut next_image: GrayImage = ImageBuffer::new(SIZE, SIZE);
 
-    *current_image.get_pixel_mut(SIZE / 2, SIZE / 2) = image::Luma([250u8]);
+    *current_image.get_pixel_mut(SIZE / 2, SIZE / 2) = image::Luma([ALIVE_START]);
 
     let mut buffer: Vec<u32> = vec![0; (SIZE * SIZE) as usize];
     let mut window = Window::new(
