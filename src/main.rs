@@ -54,17 +54,17 @@ fn next_generation(current: &GrayImage, next: &mut GrayImage) {
                     continue;
                 }
 
-                let dist = (nx * nx + ny * ny) as f32;
+                let dist = (dx * dx + dy * dy) as f32;
                 let val = current.get_pixel(nx, ny)[0].checked_sub(MAKE_ALIVE_THRESHOLD).unwrap_or(0) as f32;
 
                 sum += val / dist;
             }
 
-            if sum < 0.001 {
+            if sum < 0.1 {
                 continue;
             }
 
-            if rng.gen::<f32>() < 30.0 * sum as f32 {
+            if rng.gen::<f32>() < 0.003 * sum as f32 {
                 // Make it alive!
                 *pixel = image::Luma([ALIVE_START]);
             }
