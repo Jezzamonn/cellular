@@ -40,6 +40,7 @@ fn next_generation(current: &GrayImage, next: &mut GrayImage) {
 
         // TODO: Consider refactoring to remove branching
         if current_pixel[0] <= COME_ALIVE_THRESHOLD {
+            let mut sum: u32 = 0;
             for (dx, dy) in DIRECTIONS.iter() {
                 let nx = (x as i32 + dx) as u32;
                 let ny = (y as i32 + dy) as u32;
@@ -48,18 +49,12 @@ fn next_generation(current: &GrayImage, next: &mut GrayImage) {
                     continue;
                 }
 
-                if current.get_pixel(nx, ny)[0] != MAKE_ALIVE_THRESHOLD {
-                    continue;
-                }
+                sum += current.get_pixel(nx, ny)[0] as u32;
+            }
 
-                // Add some randomness, so the shape isn't always the same
-                if rng.gen::<f32>() < 0.8 {
-                    continue;
-                }
-
+            if rng.gen::<f32>() < 0.4 * sum as f32 {
                 // Make it alive!
                 *pixel = image::Luma([ALIVE_START]);
-                break;
             }
         }
     }
