@@ -34,7 +34,7 @@ fn next_generation(current: &GrayImage, next: &mut GrayImage) {
                     continue;
                 }
 
-                if current.get_pixel(nx, ny)[0] < MAKE_ALIVE_THRESHOLD {
+                if current.get_pixel(nx, ny)[0] != MAKE_ALIVE_THRESHOLD {
                     continue;
                 }
 
@@ -44,7 +44,7 @@ fn next_generation(current: &GrayImage, next: &mut GrayImage) {
                 }
 
                 // Make it alive!
-                *pixel = image::Luma([255u8]);
+                *pixel = image::Luma([250u8]);
                 break;
             }
         }
@@ -55,7 +55,7 @@ fn main() {
     let mut current_image: GrayImage = ImageBuffer::new(SIZE, SIZE);
     let mut next_image: GrayImage = ImageBuffer::new(SIZE, SIZE);
 
-    *current_image.get_pixel_mut(SIZE / 2, SIZE / 2) = image::Luma([255u8]);
+    *current_image.get_pixel_mut(SIZE / 2, SIZE / 2) = image::Luma([250u8]);
 
     let mut buffer: Vec<u32> = vec![0; (SIZE * SIZE) as usize];
     let mut window = Window::new(
