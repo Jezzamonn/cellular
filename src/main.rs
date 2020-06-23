@@ -53,7 +53,7 @@ fn next_generation(current: &GrayImage, next: &mut GrayImage) {
                 }
 
                 // Add some randomness, so the shape isn't always the same
-                if rng.gen::<bool>() {
+                if rng.gen::<f32>() < 0.8 {
                     continue;
                 }
 
