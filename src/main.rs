@@ -1,8 +1,8 @@
-extern crate image;
-
 use image::{GenericImageView, GrayImage, ImageBuffer};
-use minifb::{Key, Window, WindowOptions};
+use minifb::{Window, WindowOptions};
+use rand::prelude::*;
 use std::time::Duration;
+
 
 const SIZE: u32 = 200;
 const DECAY: u8 = 2;
@@ -12,6 +12,8 @@ const COME_ALIVE_THRESHOLD: u8 = 100;
 const DIRECTIONS: [(i32, i32); 4] = [(0, -1), (-1, 0), (1, 0), (0, 1)];
 
 fn next_generation(current: &GrayImage, next: &mut GrayImage) {
+    let mut rng = rand::thread_rng();
+
     for ((x, y, pixel), (_, _, current_pixel)) in
         next.enumerate_pixels_mut().zip(current.enumerate_pixels())
     {
@@ -33,6 +35,11 @@ fn next_generation(current: &GrayImage, next: &mut GrayImage) {
                 }
 
                 if current.get_pixel(nx, ny)[0] < MAKE_ALIVE_THRESHOLD {
+                    continue;
+                }
+
+                // Add some randomness, so the shape isn't always the same
+                if rng.gen::<bool>() {
                     continue;
                 }
 
