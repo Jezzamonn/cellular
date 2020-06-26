@@ -1,6 +1,8 @@
 use image::{GenericImageView, GrayImage, ImageBuffer};
 use minifb::{Window, WindowOptions};
 use rand::prelude::*;
+use rand::SeedableRng;
+use rand::rngs::StdRng;
 use std::time::Duration;
 
 
@@ -31,7 +33,7 @@ const DIRECTIONS: [(i32, i32); 12] = [
 ];
 
 fn next_generation(current: &GrayImage, next: &mut GrayImage) {
-    let mut rng = rand::thread_rng();
+    let mut rng: StdRng = SeedableRng::seed_from_u64(12345);
 
     for ((x, y, pixel), (_, _, current_pixel)) in
         next.enumerate_pixels_mut().zip(current.enumerate_pixels())
