@@ -73,7 +73,7 @@ fn next_generation(current: &GrayImage, next: &mut GrayImage, rng: &mut StdRng) 
 }
 
 fn main() {
-    let mut rng: StdRng = SeedableRng::seed_from_u64(12345);
+    let mut rng: StdRng = SeedableRng::seed_from_u64(123456);
 
     let mut current_image: GrayImage = ImageBuffer::new(SIZE, SIZE);
     let mut next_image: GrayImage = ImageBuffer::new(SIZE, SIZE);
