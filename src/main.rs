@@ -32,9 +32,7 @@ const DIRECTIONS: [(i32, i32); 12] = [
     (2, 0),
 ];
 
-fn next_generation(current: &GrayImage, next: &mut GrayImage) {
-    let mut rng: StdRng = SeedableRng::seed_from_u64(12345);
-
+fn next_generation(current: &GrayImage, next: &mut GrayImage, rng: &mut StdRng) {
     for ((x, y, pixel), (_, _, current_pixel)) in
         next.enumerate_pixels_mut().zip(current.enumerate_pixels())
     {
@@ -75,6 +73,8 @@ fn next_generation(current: &GrayImage, next: &mut GrayImage) {
 }
 
 fn main() {
+    let mut rng: StdRng = SeedableRng::seed_from_u64(12345);
+
     let mut current_image: GrayImage = ImageBuffer::new(SIZE, SIZE);
     let mut next_image: GrayImage = ImageBuffer::new(SIZE, SIZE);
 
@@ -98,7 +98,7 @@ fn main() {
 
     // let mut i = 0;
     while window.is_open() {
-        next_generation(&current_image, &mut next_image);
+        next_generation(&current_image, &mut next_image, &mut rng);
         // Swap the two
         let tmp = next_image;
         next_image = current_image;
