@@ -98,7 +98,7 @@ fn main() {
 
     let mut i = 0;
     while window.is_open() {
-        current_image.save(format!("export/frame{:05}.png", i)).unwrap();
+        current_image.save(format!("export/gen1/frame{:05}.png", i)).unwrap();
         i += 1;
 
         next_generation(&current_image, &mut next_image, &mut rng);
