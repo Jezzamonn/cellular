@@ -7,7 +7,7 @@ use std::time::Duration;
 const SIZE: u32 = 200;
 const DECAY: u8 = 5;
 const MAKE_ALIVE_THRESHOLD: u8 = 200;
-const COME_ALIVE_THRESHOLD: u8 = 50;
+const COME_ALIVE_THRESHOLD: u8 = 70;
 const ALIVE_START: u8 = 250;
 
 const DIRECTIONS: [(i32, i32); 12] = [
