@@ -6,10 +6,10 @@ use rand::rngs::StdRng;
 use std::time::Duration;
 
 
-const SIZE: u32 = 200;
+const SIZE: u32 = 500;
 const DECAY: u8 = 5;
 const MAKE_ALIVE_THRESHOLD: u8 = 200;
-const COME_ALIVE_THRESHOLD: u8 = 70;
+const COME_ALIVE_THRESHOLD: u8 = 60;
 const ALIVE_START: u8 = 250;
 
 const DIRECTIONS: [(i32, i32); 12] = [
@@ -96,8 +96,11 @@ fn main() {
     // 60 fps
     window.limit_update_rate(Some(Duration::from_micros(16600)));
 
-    // let mut i = 0;
+    let mut i = 0;
     while window.is_open() {
+        current_image.save(format!("export/frame{:05}.png", i)).unwrap();
+        i += 1;
+
         next_generation(&current_image, &mut next_image, &mut rng);
         // Swap the two
         let tmp = next_image;
@@ -112,10 +115,5 @@ fn main() {
         window
             .update_with_buffer(&buffer, SIZE as usize, SIZE as usize)
             .unwrap();
-
-        // i += 1;
-        // if i > 200 {
-        //     img1.save(format!("export/generate{}.png", i)).unwrap();
-        // }
     }
 }
